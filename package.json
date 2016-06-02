@@ -1,0 +1,60 @@
+{
+  "name": "s3blaster",
+  "version": "0.0.1",
+  "description": "s3blaster measures performance of S3 Servers",
+  "main": "index.js",
+  "engines": {
+    "node": "~4.2.0"
+  },
+  "repository": "scality/s3blaster",
+  "keywords": [
+    "s3",
+    "performance"
+  ],
+  "author": {
+    "name": "Giorgio Regni",
+    "email": "giorgio.regni@scality.com",
+    "url": "http://www.scality.com/"
+  },
+  "contributors": [
+    "Lam Pham Sy <lam.pham-sy@scality.com>"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/scality/s3blaster/issues"
+  },
+  "homepage": "https://github.com/scality/s3blaster#readme",
+  "dependencies": {
+    "async": "~1.4.2",
+    "aws-sdk": "^2.2.23",
+    "utf8": "~2.1.1"
+  },
+  "devDependencies": {
+    "commander": "^2.9.0",
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.0.0",
+    "eslint-config-ironman": "scality/IronMan-Guidelines#rel/1.0",
+    "mocha": "^2.3.3",
+    "ssh2": "~0.2.17",
+    "underscore": "^1.8.3",
+    "winston": "^2.2.0",
+    "generic-pool": "~2.0.4",
+    "readline-sync": "^1.4.1"
+  },
+  "scripts": {
+    "lint": "eslint $(git ls-files '*.js')",
+    "lint_md": "mdlint $(git ls-files '*.md')",
+    "start": "node index.js",
+    "s3simple": "mocha tests/performance/s3simple.js",
+    "s3standard": "mocha tests/performance/s3standard.js",
+    "s3full": "mocha tests/performance/s3full.js",
+    "s3sizes": "mocha tests/performance/s3sizes.js",
+    "s3parallel": "mocha tests/performance/s3parallel.js",
+    "s3mpu": "mocha tests/performance/s3mpu.js",
+    "s3ga":  "mocha tests/performance/s3ga.js",
+    "s3perf":  "mocha tests/performance/s3perf.js",
+    "s3mdSize":  "mocha tests/performance/s3mdSize.js",
+    "s3bigFile":  "mocha tests/performance/s3bigFile.js",
+    "s3eko":  "mocha tests/performance/s3eko.js"
+  }
+}

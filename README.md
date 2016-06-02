@@ -200,7 +200,7 @@ Then, all output files will be stored in `release/today` directory.
 
 S3Blaster is executed via:
 
-`node index.js`
+`mocha lib/s3blaster.js`
 
 Default input parameters are given in the `lib/config.js` file. The parameters
 in the file will be overwritten by using command line. A full description
