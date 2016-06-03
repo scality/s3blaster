@@ -354,7 +354,7 @@ simul: {
     //  - 'supervisord':  memory &  %cpu usage of supervisord processes
     //  - 'vaultd':  memory &  %cpu usage of vaultd processes
     //  - 's3':   memory & max %cpu usage of every S3 process
-    //  - 'ironman':  memory & sum %cpu usage of all IronMan processes
+    //  - 'scality':  memory & sum %cpu usage of all scality processes
     ssmTypes: 'all',
     // dynamic extra processes for monitoring, e.g. 'pattern1,pattern2'
     // Note: the given pattern will be used to monitor the desired process
