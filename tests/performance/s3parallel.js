@@ -1,35 +1,77 @@
 'use strict'; // eslint-disable-line strict
 
+/*
+ * The file contains multiple scenarios for measuring performance of S3
+ * specifying on different number of parallel requests.
+ * Main purpose of these measurements is to estimate maximal number of
+ *  operations/s, or throughput equivalently.
+ * These scenarios are divided by number of connectors and number of buckets
+ * 1. Connectors: single, multiple via proxy, multiple via balancing
+ * 2. Buckets: single, multiple
+ * Only sequential simulation is executed, i.e. at a time, a type of request
+ *  with a single combination of (number of parallel requests, object size) is
+ *  executed.
+ */
+
+const numCPUs = require('os').cpus().length;
+
 const runS3Blaster = require('../../lib/s3blaster').runS3Blaster;
 const genCmd = require('../../lib/s3blaster').genCmd;
 
+const numWorkers = numCPUs;
+// params.paralReqs is an array of numbers of parallel requests sent from each
+// worker. Hence, if there are multiple workers, total numbers of parallel
+// requests are equal such numbers multipled with number of workers
+const totalParalReqs = [32, 64, 128, 256, 512, 1024, 2048, 10240];
+const paralReqs = totalParalReqs.map(num =>
+                    Math.max(1, Math.floor(num / numWorkers)));
+
+const proxyBackendsNb = 5;
+const paralReqsProxy = totalParalReqs.map(num =>
+                    Math.max(1, Math.floor(num / proxyBackendsNb)));
+
+const maxBktsNb = 30;
 const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
+
+const proxy = {
+    host: 'proxy_address',
+    port: 'proxy_port',
+};
+
 const params = {
-    forksNb: 0,
+    forksNb: 1,
     bucketsNb: 1,
-    bucketPrefix: 'bucketscality',
-    objectsNb: 1000,
+    bucketPrefix: 'buckets3parallel',
+    objectsNb: 1e6,
     fillObjs: 0,
-    sizes: [0, 10],
+    sizes: [0, 1024, 10240],
     unit: 'KB',
+    objMetadata: 'full',
     requests: 'put,get,delete',
-    proprReqs: [1, 1, 1],       // proportion of requests
+    proprReqs: [1, 1, 1, 1, 1, 1],       // proportion of requests
     range: ['all', 'all', 'all'],
     schedule: 'each',
-    nextKey: 'seq',
-    paralReqs: [1, 30, 50, 64, 90, 128, 150, 200, 256, 300, 350, 400, 500],
-    sendReqRates: [500, 500, 500, 500, 500, 500],
-    observationsNb: 1000000,
+    simulDelay: 10,
+    nextKey: 'rand',
+    paralReqs,
+    sendReqRates: ['max', 'max', 'max'],
+    observationsNb: 1e6,
     freqShow: 1000,
     samplingStep: 1,
     percentiles: [60, 80, 90, 95, 99, 100],
-    runTime: 20,
+    // run time for each: object size, #parallel requests and each request for
+    //  'schedule=each'
+    runTime: 600,
+    dontCleanDB: true,
     ssm: true,
+    displaySSM: true,
     liveGlobal: true,
     rate: 1000,
     statsFolder: 'stats',
     output: 'output',
-    message: 'Measurement specified for different number of parallel requests',
+    message: 'S3 branch: branch of S3,\\n' +
+             'MD branch: branch of MD,\\n' +
+             'Vault branch: branch of Vault',
 };
 
 let folder;
@@ -39,154 +81,129 @@ if (process.env.FOLDERNAME) {
     folder = (new Date()).toDateString().replace(/\s/g, '_');
 }
 
-describe('Single connector, single bucket, put+get+delete', function fn() {
+describe('Single connector, single bucket, all requests', function fn() {
     this.timeout(0);
 
     before(() => {
-        params.statsFolder = `${folder}/parallel/allSingle`;
+        params.statsFolder = `${folder}/s3parallel/conn1_bkt${params.bucketsNb}`;
     });
 
     it('Sequential run', done => {
-        params.schedule = 'each';
-        params.fillObjs = 0;
-        params.output = 'putgetdel_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
-    });
-
-    it('Mixed run', done => {
-        params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.output = 'putgetdel_mixed';
+        params.output = 'allReqs_seq';
         const cmd = genCmd(cmdInit, params);
         process.nextTick(runS3Blaster, cmd, done);
     });
 });
 
-describe('Single connector, multiple buckets, put+get+delete', function fn() {
+describe('Single connector, multiple buckets, all requests', function fn() {
     this.timeout(0);
 
     before(() => {
-        params.bucketsNb = 10;
-        params.statsFolder = `${folder}/parallel/multBkts`;
+        params.bucketsNb = maxBktsNb;
+        params.statsFolder = `${folder}/s3parallel/conn1_bkt${params.bucketsNb}`;
     });
 
     it('Sequential run', done => {
-        params.schedule = 'each';
-        params.fillObjs = 0;
-        params.output = 'putgetdel_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
-    });
-
-    it('Mixed run', done => {
-        params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.output = 'putgetdel_mixed';
+        params.output = 'allReqs_seq';
         const cmd = genCmd(cmdInit, params);
         process.nextTick(runS3Blaster, cmd, done);
     });
 });
 
-describe('Single connector & bucket, forks 5, put+get+delete', function fn() {
+/* Multiple connectors: s3blaster sends requests to Proxy that spreads
+ * requests to all other servers */
+describe('Multiple connectors via proxy, single bucket', function fn() {
     this.timeout(0);
 
     before(() => {
-        params.forksNb = 5;
-        params.host = 'single';
-        params.statsFolder = `${folder}/parallel/allSingleForks5`;
+        params.host = proxy.host;
+        params.port = proxy.port;
+        params.bucketsNb = 1;
+        params.paralReqs = paralReqsProxy;
+        params.statsFolder =
+            `${folder}/s3parallel/connProxy_bkt${params.bucketsNb}`;
     });
 
     it('Sequential run', done => {
-        params.schedule = 'each';
-        params.fillObjs = 0;
-        params.output = 'putgetdel_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
-    });
-
-    it('Mixed run', done => {
-        params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.output = 'putgetdel_mixed';
+        params.output = 'allReqs_seq';
         const cmd = genCmd(cmdInit, params);
         process.nextTick(runS3Blaster, cmd, done);
     });
 });
 
-describe('Single connector, multiple buckets, forks 5, put+get+delete',
-    function fn() {
-        this.timeout(0);
-
-        before(() => {
-            params.bucketsNb = 10;
-            params.statsFolder = `${folder}/parallel/multBktsForks5`;
-        });
-
-        it('Sequential run', done => {
-            params.schedule = 'each';
-            params.fillObjs = 0;
-            params.output = 'putgetdel_seq';
-            const cmd = genCmd(cmdInit, params);
-            process.nextTick(runS3Blaster, cmd, done);
-        });
-
-        it('Mixed run', done => {
-            params.schedule = 'mixed';
-            params.fillObjs = params.objectsNb;
-            params.output = 'putgetdel_mixed';
-            const cmd = genCmd(cmdInit, params);
-            process.nextTick(runS3Blaster, cmd, done);
-        });
-    });
-
-describe('Single connector & bucket, forks 10, put+get+delete', function fn() {
+describe('Multiple connectors, multiple buckets, all requests', function fn() {
     this.timeout(0);
 
     before(() => {
-        params.forksNb = 10;
-        params.statsFolder = `${folder}/parallel/allSingleForks10`;
+        params.bucketsNb = maxBktsNb;
+        params.statsFolder =
+            `${folder}/s3parallel/connProxy_bkt${params.bucketsNb}`;
     });
 
     it('Sequential run', done => {
-        params.schedule = 'each';
-        params.fillObjs = 0;
-        params.output = 'putgetdel_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
-    });
-
-    it('Mixed run', done => {
-        params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.output = 'putgetdel_mixed';
+        params.output = 'allReqs_seq';
         const cmd = genCmd(cmdInit, params);
         process.nextTick(runS3Blaster, cmd, done);
     });
 });
 
-describe('Single connector, multiple buckets, forks 10, put+get+delete',
-    function fn() {
-        this.timeout(0);
+/* Balacing connectors: each fork sends requests to only one server */
+describe('Balancing connectors, single bucket, all requests', function fn() {
+    this.timeout(0);
 
-        before(() => {
-            params.bucketsNb = 10;
-            params.statsFolder = `${folder}/parallel/multBktsForks10`;
-        });
-
-        it('Sequential run', done => {
-            params.schedule = 'each';
-            params.fillObjs = 0;
-            params.output = 'putgetdel_seq';
-            const cmd = genCmd(cmdInit, params);
-            process.nextTick(runS3Blaster, cmd, done);
-        });
-
-        it('Mixed run', done => {
-            params.schedule = 'mixed';
-            params.fillObjs = params.objectsNb;
-            params.output = 'putgetdel_mixed';
-            const cmd = genCmd(cmdInit, params);
-            process.nextTick(runS3Blaster, cmd, done);
-        });
+    before(() => {
+        params.host = 'balancing';
+        params.port = 8000;
+        params.forksNb = numWorkers;
+        params.paralReqs = paralReqs;
+        params.bucketsNb = 1;
+        params.statsFolder =
+            `${folder}/s3parallel/connBalancing_bkt${params.bucketsNb}`;
     });
+
+    it('Sequential run', done => {
+        params.output = 'allReqs_seq';
+        const cmd = genCmd(cmdInit, params);
+        process.nextTick(runS3Blaster, cmd, done);
+    });
+});
+
+describe('Balancing connectors, multiple buckets, all requests', function fn() {
+    this.timeout(0);
+
+    before(() => {
+        params.bucketsNb = maxBktsNb;
+        params.statsFolder =
+            `${folder}/s3parallel/connBalancing_bkt${params.bucketsNb}`;
+    });
+
+    it('Sequential run', done => {
+        params.output = 'allReqs_seq';
+        const cmd = genCmd(cmdInit, params);
+        process.nextTick(runS3Blaster, cmd, done);
+    });
+});
+
+/*
+ * Clean databases
+ */
+describe('Clean databases of simulation', function fn() {
+    this.timeout(0);
+
+    before(() => {
+        params.forksNb = 1;
+        params.statsFolder = `${folder}/s3parallel/clean`;
+        params.paralReqs = [128];
+        params.dontCleanDB = false;
+        params.schedule = 'each';
+        params.fillObjs = 0;
+        params.requests = 'delete',
+        params.observationsNb = 1;
+    });
+
+    it('Clean databases', done => {
+        params.output = 'cleanDB_seq';
+        const cmd = genCmd(cmdInit, params);
+        process.nextTick(runS3Blaster, cmd, done);
+    });
+});

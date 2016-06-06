@@ -35,10 +35,10 @@
     "eslint-config-airbnb": "^6.0.0",
     "eslint-config-scality": "scality/Guidelines#rel/1.0",
     "mocha": "^2.3.3",
-    "ssh2": "~0.2.17",
+    "generic-pool": "^2.4.2",
+    "ssh2": "^0.5.0",
     "underscore": "^1.8.3",
     "winston": "^2.2.0",
-    "generic-pool": "~2.0.4",
     "readline-sync": "^1.4.1"
   },
   "scripts": {

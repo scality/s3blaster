@@ -196,6 +196,23 @@ output folder can be specified by using the environment variable FOLDERNAME, e.g
 
 Then, all output files will be stored in `release/today` directory.
 
+## Installation
+Simple as `npm install`
+
+### Plot dependencies
+
+Output graphs would be created using `gnuplot` program. To install it on
+
+For Ubuntu
+```
+sudo apt-get install libcairo2-dev
+sudo apt-get install libpango1.0-dev
+sudo apt-get install gnuplot
+```
+
+For other OS, see Cairo (https://cairographics.org/download/) and
+gnuplot (http://www.gnuplot.info/download.html)
+
 ## How to run S3Blaster
 
 S3Blaster is executed via:
