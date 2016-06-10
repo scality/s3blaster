@@ -9,8 +9,7 @@
  * 3. Measures get performance with multiple requests at a time
  */
 
-const runS3Blaster = require('../../lib/s3blaster').runS3Blaster;
-const genCmd = require('../../lib/s3blaster').genCmd;
+const runS3Blaster = require('../../lib/runS3Blaster');
 
 const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
 
@@ -64,22 +63,23 @@ describe('Single connector, single bucket, MPU', function fn() {
     before(() => {
         params.statsFolder = `${folder}/s3mpu/mpu`;
         params.requests = 'multi-upload';
+        params.observationsNb = params.objectsNb;
+        // to make sure that all objects are uploaded
+        params.runTime = Infinity;
     });
 
     it('put 5MB part sizes', done => {
         params.partSizes = 5;
         params.output = 'mpu_5MB_seq';
         params.prefixKey = 'key_obj1GB_part5MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 
     it('put 20MB part sizes', done => {
         params.partSizes = 20;
         params.output = 'mpu_20MB_seq';
         params.prefixKey = 'key_obj1GB_part20MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -89,22 +89,22 @@ describe('Single connector, single bucket, get', function fn() {
     before(() => {
         params.statsFolder = `${folder}/s3mpu/get`;
         params.requests = 'get';
+        params.observationsNb = 1e6;
+        params.runTime = 1200;
     });
 
     it('get 5MB part sizes', done => {
         params.partSizes = 5;
         params.output = 'get_5MB_seq';
         params.prefixKey = 'key_obj1GB_part5MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 
     it('get 20MB part sizes', done => {
         params.partSizes = 20;
         params.output = 'get_20MB_seq';
         params.prefixKey = 'key_obj1GB_part20MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -120,16 +120,14 @@ describe('Single connector, single bucket, get mult paralReqs', function fn() {
         params.partSizes = 5;
         params.output = 'get_5MB_seq';
         params.prefixKey = 'key_obj1GB_part5MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 
     it('get 20MB part sizes', done => {
         params.partSizes = 20;
         params.output = 'get_20MB_seq';
         params.prefixKey = 'key_obj1GB_part20MB';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -152,7 +150,6 @@ describe('Clean databases of simulation', function fn() {
 
     it('Clean databases', done => {
         params.output = 'cleanDB_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });

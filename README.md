@@ -250,7 +250,7 @@ acc: {
 
 These secret information should be stored in a file whose path is given via
 `--acc-file` in command line. A default name for that file is
-`.scality_credentials`.  In the file, the information are stored in the following
+`.credentials`.  In the file, the information are stored in the following
 formula:
 
 ```

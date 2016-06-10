@@ -15,8 +15,7 @@
 
 const numCPUs = require('os').cpus().length;
 
-const genCmd = require('../../lib/s3blaster').genCmd;
-const runS3Blaster = require('../../lib/s3blaster').runS3Blaster;
+const runS3Blaster = require('../../lib/runS3Blaster');
 
 const numWorkers = numCPUs;
 
@@ -38,12 +37,12 @@ const paralReqs = totalParalReqs.map(num =>
                     Math.max(1, Math.floor(num / numWorkers)));
 
 const maxBktsNb = 30;
-const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
+// const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
 
 const params = {
     forksNb: 1,
     bucketsNb: 1,
-    bucketPrefix: 'buckets3standard',
+    bucketPrefix: 'buckets3standardf',
     objectsNb: 1e6,
     fillObjs: 0,
     sizes: [0, 10],
@@ -94,8 +93,7 @@ describe('Single connector, single bucket, lowest latency', function fn() {
 
     it('Put, get, then delete', done => {
         params.output = 'lowestLatency_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -114,8 +112,7 @@ describe('Single connector, single bucket, max ops/s', function fn() {
 
     it('Put, then get', done => {
         params.output = 'allSingle_maxOps_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -133,8 +130,7 @@ describe('Multiple connectors & buckets, max ops/s', function fn() {
 
     it('Put, get, then delete', done => {
         params.output = `bkt${params.bucketsNb}_maxOps_seq`;
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -156,8 +152,7 @@ describe('Single connector, single bucket, throughput', function fn() {
 
     it('Put, then get', done => {
         params.output = 'allSingle_throughput_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -175,8 +170,7 @@ describe('Multiple connectors & buckets, throughput', function fn() {
 
     it('Put, get, then delete', done => {
         params.output = `bkt${params.bucketsNb}_throughput_seq`;
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -199,7 +193,6 @@ describe('Clean databases of simulation', function fn() {
 
     it('Clean databases', done => {
         params.output = 'cleanDB_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });

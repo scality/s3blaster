@@ -16,8 +16,7 @@
 
 const numCPUs = require('os').cpus().length;
 
-const runS3Blaster = require('../../lib/s3blaster').runS3Blaster;
-const genCmd = require('../../lib/s3blaster').genCmd;
+const runS3Blaster = require('../../lib/runS3Blaster');
 
 const numWorkers = numCPUs;
 // params.paralReqs is an array of numbers of parallel requests sent from each
@@ -89,8 +88,7 @@ describe('Single connector, single bucket, all requests', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -104,8 +102,7 @@ describe('Single connector, multiple buckets, all requests', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -125,8 +122,7 @@ describe('Multiple connectors via proxy, single bucket', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -141,8 +137,7 @@ describe('Multiple connectors, multiple buckets, all requests', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -162,8 +157,7 @@ describe('Balancing connectors, single bucket, all requests', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -178,8 +172,7 @@ describe('Balancing connectors, multiple buckets, all requests', function fn() {
 
     it('Sequential run', done => {
         params.output = 'allReqs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -202,8 +195,7 @@ describe('Prepare for mixed simulation', function fn() {
 
     it('Fill objects', done => {
         params.output = 'fillObjs_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -222,8 +214,7 @@ describe('Single connector, single bucket, all requests', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -237,8 +228,7 @@ describe('Single connector, multiple buckets, all requests', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -258,8 +248,7 @@ describe('Multiple connectors via proxy, single bucket', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -274,8 +263,7 @@ describe('Multiple connectors, multiple buckets, all requests', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -295,8 +283,7 @@ describe('Balancing connectors, single bucket, all requests', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -311,8 +298,7 @@ describe('Balancing connectors, multiple buckets, all requests', function fn() {
 
     it('Mixed run', done => {
         params.output = 'allReqs_mixed';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
 
@@ -336,7 +322,6 @@ describe('Clean databases of simulation', function fn() {
 
     it('Clean databases', done => {
         params.output = 'cleanDB_seq';
-        const cmd = genCmd(cmdInit, params);
-        process.nextTick(runS3Blaster, cmd, done);
+        process.nextTick(runS3Blaster.start, params, done);
     });
 });
