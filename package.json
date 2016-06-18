@@ -2,7 +2,7 @@
   "name": "s3blaster",
   "version": "0.0.1",
   "description": "s3blaster measures performance of S3 Servers",
-  "main": "index.js",
+  "main": "lib/s3blaster.js",
   "engines": {
     "node": "~4.2.0"
   },
@@ -38,13 +38,12 @@
     "generic-pool": "^2.4.2",
     "ssh2": "^0.5.0",
     "underscore": "^1.8.3",
-    "winston": "^2.2.0",
     "readline-sync": "^1.4.1"
   },
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
     "lint_md": "mdlint $(git ls-files '*.md')",
-    "start": "node index.js",
+    "start": "mocha lib/s3blaster.js",
     "s3simple": "mocha tests/performance/s3simple.js",
     "s3standard": "mocha tests/performance/s3standard.js",
     "s3full": "mocha tests/performance/s3full.js",

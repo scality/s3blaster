@@ -46,7 +46,7 @@ const params = {
     schedule: 'each',
     simulDelay: 10,
     nextKey: 'rand',
-    paralReqs,
+    paralReqs: [1, 10],
     sendReqRates: ['max', 'max', 'max'],
     observationsNb: 1e6,
     freqShow: 1000,
