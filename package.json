@@ -33,7 +33,7 @@
     "commander": "^2.9.0",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#rel/1.0",
+    "eslint-config-scality": "scality/Guidelines",
     "mocha": "^2.3.3",
     "generic-pool": "^2.4.2",
     "ssh2": "^0.5.0",
@@ -50,10 +50,6 @@
     "s3sizes": "mocha tests/performance/s3sizes.js",
     "s3parallel": "mocha tests/performance/s3parallel.js",
     "s3mpu": "mocha tests/performance/s3mpu.js",
-    "s3ga":  "mocha tests/performance/s3ga.js",
-    "s3perf":  "mocha tests/performance/s3perf.js",
-    "s3mdSize":  "mocha tests/performance/s3mdSize.js",
-    "s3bigFile":  "mocha tests/performance/s3bigFile.js",
-    "s3eko":  "mocha tests/performance/s3eko.js"
+    "s3ga":  "mocha tests/performance/s3ga.js"
   }
 }

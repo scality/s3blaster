@@ -15,7 +15,10 @@
  *      requests.
  */
 
+const numCPUs = require('os').cpus().length;
 const runS3Blaster = require('../../lib/runS3Blaster');
+
+const numWorkers = Math.min(numCPUs, 8);
 
 function createArray(min, step, max) {
     const arr = [];
@@ -27,10 +30,17 @@ function createArray(min, step, max) {
     return arr;
 }
 
+// params.paralReqs is an array of numbers of parallel requests sent from each
+// worker. Hence, if there are multiple workers, total numbers of parallel
+// requests are equal such numbers multipled with number of workers
+const totalParalReqs = [32, 64, 128, 256, 512];
+const paralReqs = totalParalReqs.map(num =>
+                    Math.max(1, Math.floor(num / numWorkers)));
 const sizes = createArray(1, 10, 90).concat(createArray(100, 100, 900))
                 .concat(createArray(1024, 1024, 10240));
 
-const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
+const maxBktsNb = 30;
+
 const params = {
     forksNb: 1,
     bucketsNb: 1,
@@ -112,7 +122,7 @@ describe('Prepare for mixed simulation', function fn() {
         params.paralReqs = [128];
         params.schedule = 'mixed';
         params.fillObjs = params.objectsNb;
-        params.requests = 'put',
+        params.requests = 'put';
         params.observationsNb = 1;
     });
 
@@ -168,7 +178,7 @@ describe('Clean databases of simulation', function fn() {
         params.dontCleanDB = false;
         params.schedule = 'each';
         params.fillObjs = 0;
-        params.requests = 'delete',
+        params.requests = 'delete';
         params.observationsNb = 1;
     });
 

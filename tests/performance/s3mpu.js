@@ -11,8 +11,6 @@
 
 const runS3Blaster = require('../../lib/runS3Blaster');
 
-const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
-
 const params = {
     forksNb: 1,
     bucketsNb: 1,
@@ -45,7 +43,7 @@ const params = {
     rate: 1000,
     statsFolder: 'stats',
     output: 'output',
-    getAnyKey: true,
+    workOnCurrObjs: 'yes',
     message: 'S3 branch: rel/1.1,\\n' +
              'Sproxyd: tengine',
 };
@@ -144,7 +142,7 @@ describe('Clean databases of simulation', function fn() {
         params.dontCleanDB = false;
         params.schedule = 'each';
         params.fillObjs = 0;
-        params.requests = 'delete',
+        params.requests = 'delete';
         params.observationsNb = 1;
     });
 

@@ -17,7 +17,8 @@ const numCPUs = require('os').cpus().length;
 
 const runS3Blaster = require('../../lib/runS3Blaster');
 
-const numWorkers = numCPUs;
+const numWorkers = Math.min(numCPUs, 8);
+const S3Port = 8000;
 
 function createArray(min, step, max) {
     const arr = [];
@@ -40,9 +41,10 @@ const maxBktsNb = 30;
 // const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
 
 const params = {
+    port: S3Port,
     forksNb: 1,
     bucketsNb: 1,
-    bucketPrefix: 'buckets3standardf',
+    bucketPrefix: 'bkts3std',
     objectsNb: 1e6,
     fillObjs: 0,
     sizes: [0, 10],
@@ -106,7 +108,7 @@ describe('Single connector, single bucket, max ops/s', function fn() {
         params.forksNb = numWorkers;
         params.paralReqs = paralReqs;
         params.bucketsNb = 1;
-        params.port = 8000;
+        params.port = S3Port;
         params.host = 'single';
     });
 
@@ -146,7 +148,7 @@ describe('Single connector, single bucket, throughput', function fn() {
         params.forksNb = numWorkers;
         params.paralReqs = paralReqs;
         params.bucketsNb = 1;
-        params.port = 8000;
+        params.port = S3Port;
         params.host = 'single';
     });
 
@@ -187,7 +189,7 @@ describe('Clean databases of simulation', function fn() {
         params.dontCleanDB = false;
         params.schedule = 'each';
         params.fillObjs = 0;
-        params.requests = 'delete',
+        params.requests = 'delete';
         params.observationsNb = 1;
     });
 
