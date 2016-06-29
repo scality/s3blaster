@@ -15,10 +15,7 @@
  *      requests.
  */
 
-const numCPUs = require('os').cpus().length;
 const runS3Blaster = require('../../lib/runS3Blaster');
-
-const numWorkers = Math.min(numCPUs, 8);
 
 function createArray(min, step, max) {
     const arr = [];
@@ -30,13 +27,7 @@ function createArray(min, step, max) {
     return arr;
 }
 
-// params.paralReqs is an array of numbers of parallel requests sent from each
-// worker. Hence, if there are multiple workers, total numbers of parallel
-// requests are equal such numbers multipled with number of workers
-const totalParalReqs = [32, 64, 128, 256, 512];
-const paralReqs = totalParalReqs.map(num =>
-                    Math.max(1, Math.floor(num / numWorkers)));
-const sizes = createArray(1, 10, 90).concat(createArray(100, 100, 900))
+const sizes = createArray(0, 10, 90).concat(createArray(100, 100, 900))
                 .concat(createArray(1024, 1024, 10240));
 
 const maxBktsNb = 30;
@@ -45,33 +36,28 @@ const params = {
     forksNb: 1,
     bucketsNb: 1,
     bucketPrefix: 'buckets3size',
-    objectsNb: 1e6,
-    fillObjs: 0,
+    objectsNb: 2000,
+    fillObjs: false,
     sizes,
     unit: 'KB',
-    objMetadata: 'full',
     requests: 'put,get,delete',
     proprReqs: [1, 1, 1],       // proportion of requests
     range: ['all', 'all', 'all'],
     schedule: 'each',
     simulDelay: 10,
     nextKey: 'rand',
-    paralReqs: [1, 10],
+    paralReqs: [1, 50],
     sendReqRates: ['max', 'max', 'max'],
     observationsNb: 1e6,
+    workOnCurrObjs: true,
     freqShow: 1000,
-    samplingStep: 1,
-    percentiles: [60, 80, 90, 95, 99, 100],
-    // run time for each: object size, #parallel requests and each request for
-    //  'schedule=each'
     runTime: 600,
     dontCleanDB: true,
     ssm: true,
     displaySSM: true,
     liveGlobal: true,
     rate: 1000,
-    statsFolder: 'stats',
-    output: 'output',
+    output: 's3sizes',
     message: 'S3 branch: branch of S3,\\n',
 };
 
@@ -119,10 +105,11 @@ describe('Prepare for mixed simulation', function fn() {
         params.forksNb = 1;
         params.statsFolder = `${folder}/s3sizes/prepare`;
         params.bucketsNb = maxBktsNb;
-        params.paralReqs = [128];
         params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.requests = 'put';
+        params.fillObjs = true;
+        params.fillRange = '1000:2000';
+        params.fillThreads = 64;
+        params.requests = 'get';
         params.observationsNb = 1;
     });
 
@@ -139,10 +126,10 @@ describe('Single connector, single bucket, all requests', function fn() {
         params.bucketsNb = 1;
         params.statsFolder = `${folder}/s3sizes/conn1_bkt${params.bucketsNb}`;
         params.requests = 'put,get,delete';
+        params.range = ['0:1000', '1000:2000', '0:1000'];
         params.proprReqs = [5, 20, 3];       // proportion of requests
-        params.fillObjs = 0;
+        params.fillObjs = false;
         params.observationsNb = 1e6;
-        params.paralReqs = paralReqs;
     });
 
     it('Mixed run', done => {
@@ -176,8 +163,6 @@ describe('Clean databases of simulation', function fn() {
         params.statsFolder = `${folder}/s3sizes/clean`;
         params.paralReqs = [128];
         params.dontCleanDB = false;
-        params.schedule = 'each';
-        params.fillObjs = 0;
         params.requests = 'delete';
         params.observationsNb = 1;
     });

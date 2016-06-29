@@ -1,7 +1,64 @@
 {
-    "servers":[
-        "address_of_server_1",
-        "address_of_server_2",
-        "address_of_server_3"
-    ]
+    "acc": {
+        "user": "root",
+        "publicKey": "~/.ssh/id_rsa.pub",
+        "privateKey": "~/.ssh/id_rsa"
+    },
+    "conn": {
+        "host": "localhost",
+        "port": 8000,
+        "forksNb": 0,
+        "servers": [
+            "localhost"
+        ],
+        "signature": "v4",
+        "region": "eu-west-1"
+    },
+    "db": {
+        "bucketsNb": 1,
+        "bucketPrefix": "bucket",
+        "objectsNb": 200,
+        "fillObjs": false,
+        "fillRange": "0:100",
+        "fillThreads": 64,
+        "sizes": "0",
+        "unit": "KB",
+        "partSizes": "10",
+        "objMetadata": "compact",
+        "mdPath": ""
+    },
+    "simul": {
+        "requests": "put,get,delete",
+        "proprReqs": [1, 1, 1],
+        "range": ["all", "all", "all"],
+        "schedule": "each",
+        "simulDelay": 0,
+        "nextKey": "rand",
+        "paralReqs": "1",
+        "mpuParalReqs": 1,
+        "sendReqRates": ["max", "max", "max"],
+        "observationsNb": 1000,
+        "workOnCurrObjs": true,
+        "dontCleanDB": false,
+        "noKeyFlag": false,
+        "freqShow": 1,
+        "samplingStep": 1,
+        "percentiles": [60, 80, 90, 95, 99, 100],
+        "runTime": 10,
+        "ssm": false,
+        "liveGlobal": false,
+        "rate": 1000,
+        "ssmTypes": "all",
+        "displaySSM": true,
+        "resConsMonitor": false,
+        "showInputParams": false
+    },
+    "plotter": {
+        "statsFolder": "hello/scality",
+        "graphs": "all",
+        "outputType": "pdf",
+        "output": "test",
+        "fitPlot": false,
+        "message": "message from JSON"
+    }
 }

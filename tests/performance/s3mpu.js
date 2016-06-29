@@ -16,11 +16,10 @@ const params = {
     bucketsNb: 1,
     bucketPrefix: 'buckets3mpu',
     objectsNb: 100,
-    fillObjs: 0,
+    fillObjs: false,
     sizes: [1],
     unit: 'GB',
     partSizes: 5, // in MB
-    objMetadata: 'full',
     requests: 'multi-upload,get',
     proprReqs: [1, 1],       // proportion of requests
     range: ['all', 'all'],
@@ -31,19 +30,15 @@ const params = {
     simulDelay: 3,
     nextKey: 'seq',
     observationsNb: 1e6,
+    workOnCurrObjs: true,
     freqShow: 1,
-    samplingStep: 1,
-    percentiles: [60, 80, 90, 95, 99, 100],
     runTime: 1200,
     dontCleanDB: true,
     ssm: true,
     resConsMonitor: false,
     displaySSM: true,
     liveGlobal: true,
-    rate: 1000,
-    statsFolder: 'stats',
-    output: 'output',
-    workOnCurrObjs: 'yes',
+    output: 's3mpu',
     message: 'S3 branch: rel/1.1,\\n' +
              'Sproxyd: tengine',
 };
@@ -140,8 +135,6 @@ describe('Clean databases of simulation', function fn() {
         params.statsFolder = `${folder}/s3mpu/clean`;
         params.paralReqs = [128];
         params.dontCleanDB = false;
-        params.schedule = 'each';
-        params.fillObjs = 0;
         params.requests = 'delete';
         params.observationsNb = 1;
     });

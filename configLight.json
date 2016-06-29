@@ -1,0 +1,36 @@
+{
+    "conn": {
+        "host": "localhost",
+        "port": 8000,
+        "forksNb": 0,
+        "servers": [
+            "localhost"
+        ]
+    },
+    "db": {
+        "bucketsNb": 1,
+        "bucketPrefix": "bucketname",
+        "objectsNb": 200,
+        "sizes": "0",
+        "unit": "KB"
+    },
+    "simul": {
+        "requests": "put,get,delete",
+        "proprReqs": [1, 1, 1],
+        "range": ["all", "all", "all"],
+        "sendReqRates": ["max", "max", "max"],
+        "schedule": "each",
+        "nextKey": "rand",
+        "paralReqs": "1",
+        "observationsNb": 1000,
+        "freqShow": 1000,
+        "runTime": 60,
+        "ssm": false
+    },
+    "plotter": {
+        "statsFolder": "hello/scality",
+        "outputType": "pdf",
+        "output": "test",
+        "message": "message from JSON"
+    }
+}

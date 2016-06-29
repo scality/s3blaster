@@ -38,7 +38,6 @@ const paralReqs = totalParalReqs.map(num =>
                     Math.max(1, Math.floor(num / numWorkers)));
 
 const maxBktsNb = 30;
-// const cmdInit = 'node_modules/.bin/mocha lib/s3blaster.js ';
 
 const params = {
     port: S3Port,
@@ -46,31 +45,25 @@ const params = {
     bucketsNb: 1,
     bucketPrefix: 'bkts3std',
     objectsNb: 1e6,
-    fillObjs: 0,
+    fillObjs: false,
     sizes: [0, 10],
     unit: 'KB',
-    objMetadata: 'full',
     requests: 'put,get,delete',
     proprReqs: [1, 1, 1],       // proportion of requests
     range: ['all', 'all', 'all'],
-    sendReqRates: ['max', 'max', 'max'],
     paralReqs: createArray(1, 1, 10),
     schedule: 'each',
     simulDelay: 3,
     nextKey: 'rand',
     observationsNb: 1e6,
-    freqShow: 1000,
-    samplingStep: 1,
-    percentiles: [60, 80, 90, 95, 99, 100],
-    runTime: 60,
+    workOnCurrObjs: true,
+    runTime: 120,
     dontCleanDB: true,
     ssm: true,
-    resConsMonitor: false,
-    displaySSM: true,
+    displaySSM: false,
     liveGlobal: true,
-    rate: 1000,
     statsFolder: 'stats',
-    output: 'output',
+    output: 's3standard',
     message: 'S3 branch: abc,\\n' +
              'Sproxyd: abc',
 };

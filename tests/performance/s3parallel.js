@@ -32,8 +32,8 @@ const paralReqsProxy = totalParalReqs.map(num =>
 const maxBktsNb = 30;
 
 const proxy = {
-    host: 'proxy_address',
-    port: 'proxy_port',
+    host: 'localhost',
+    port: 80,
 };
 
 const params = {
@@ -41,12 +41,12 @@ const params = {
     bucketsNb: 1,
     bucketPrefix: 'buckets3parallel',
     objectsNb: 1e6,
-    fillObjs: 0,
-    sizes: [0, 1024, 10240],
+    fillObjs: false,
+    sizes: [0, 10, 1024],
     unit: 'KB',
     objMetadata: 'full',
     requests: 'put,get,delete',
-    proprReqs: [1, 1, 1, 1, 1, 1],       // proportion of requests
+    proprReqs: [1, 1, 1],       // proportion of requests
     range: ['all', 'all', 'all'],
     schedule: 'each',
     simulDelay: 10,
@@ -55,18 +55,13 @@ const params = {
     sendReqRates: ['max', 'max', 'max'],
     observationsNb: 1e6,
     freqShow: 1000,
-    samplingStep: 1,
-    percentiles: [60, 80, 90, 95, 99, 100],
-    // run time for each: object size, #parallel requests and each request for
-    //  'schedule=each'
     runTime: 600,
     dontCleanDB: true,
     ssm: true,
     displaySSM: true,
     liveGlobal: true,
     rate: 1000,
-    statsFolder: 'stats',
-    output: 'output',
+    output: 's3parallel',
     message: 'S3 branch: branch of S3,\\n' +
              'MD branch: branch of MD,\\n' +
              'Vault branch: branch of Vault',
@@ -189,8 +184,6 @@ describe('Clean databases of simulation', function fn() {
         params.statsFolder = `${folder}/s3parallel/clean`;
         params.paralReqs = [128];
         params.dontCleanDB = false;
-        params.schedule = 'each';
-        params.fillObjs = 0;
         params.requests = 'delete';
         params.observationsNb = 1;
     });

@@ -33,16 +33,16 @@ const paralReqsProxy = totalParalReqs.map(num =>
 const maxBktsNb = 30;
 
 const proxy = {
-    host: 'proxy_address',
-    port: 'proxy_port',
+    host: 'localhost',
+    port: 80,
 };
 
 const params = {
     forksNb: 1,
     bucketsNb: 1,
     bucketPrefix: 'buckets3full',
-    objectsNb: 1e6,
-    fillObjs: 0,
+    objectsNb: 2000,
+    fillObjs: false,
     sizes: [0, 10, 512, 1024, 10240],
     unit: 'KB',
     objMetadata: 'full',
@@ -55,20 +55,17 @@ const params = {
     paralReqs,
     sendReqRates: ['max', 'max', 'max', 'max', 'max', 'max'],
     observationsNb: 1e6,
-    freqShow: 1000,
-    samplingStep: 1,
-    percentiles: [60, 80, 90, 95, 99, 100],
+    workOnCurrObjs: true,
     // run time for each: object size, #parallel requests and each request for
     //  'schedule=each'
-    runTime: 200,
+    runTime: 240,
     dontCleanDB: true,
     ssm: true,
     displaySSM: true,
     liveGlobal: true,
     rate: 1000,
-    statsFolder: 'stats',
-    output: 'output',
     message: 'S3 branch: branch of S3,\\n',
+    output: 's3full',
 };
 
 let folder;
@@ -187,8 +184,10 @@ describe('Prepare for mixed simulation', function fn() {
         params.bucketsNb = maxBktsNb;
         params.paralReqs = [128];
         params.schedule = 'mixed';
-        params.fillObjs = params.objectsNb;
-        params.requests = 'put';
+        params.fillObjs = true;
+        params.fillRange = '1000:2000';
+        params.fillThreads = 128;
+        params.requests = 'get';
         params.observationsNb = 1;
     });
 
@@ -205,8 +204,9 @@ describe('Single connector, single bucket, all requests', function fn() {
         params.bucketsNb = 1;
         params.statsFolder = `${folder}/s3full/conn1_bkt${params.bucketsNb}`;
         params.requests = 'put,list,get,get-acl,delete';
+        params.range = '0:1000,0:2000,1000:2000,1000:2000,0:1000';
         params.proprReqs = [5, 1, 20, 2, 3];       // proportion of requests
-        params.fillObjs = 0;
+        params.fillObjs = false;
         params.observationsNb = 1e6;
         params.paralReqs = paralReqs;
     });
@@ -313,8 +313,6 @@ describe('Clean databases of simulation', function fn() {
         params.bucketsNb = maxBktsNb;
         params.paralReqs = [128];
         params.dontCleanDB = false;
-        params.schedule = 'each';
-        params.fillObjs = 0;
         params.requests = 'delete';
         params.observationsNb = 1;
     });

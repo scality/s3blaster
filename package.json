@@ -2,15 +2,11 @@
   "name": "s3blaster",
   "version": "0.0.1",
   "description": "s3blaster measures performance of S3 Servers",
-  "main": "lib/s3blaster.js",
+  "main": "index.js",
   "engines": {
     "node": "~4.2.0"
   },
   "repository": "scality/s3blaster",
-  "keywords": [
-    "s3",
-    "performance"
-  ],
   "author": {
     "name": "Giorgio Regni",
     "email": "giorgio.regni@scality.com",
@@ -24,6 +20,10 @@
     "url": "https://github.com/scality/s3blaster/issues"
   },
   "homepage": "https://github.com/scality/s3blaster#readme",
+  "keywords": [
+    "s3",
+    "performance"
+  ],
   "dependencies": {
     "async": "~1.4.2",
     "aws-sdk": "^2.2.23",
@@ -43,13 +43,12 @@
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
     "lint_md": "mdlint $(git ls-files '*.md')",
-    "start": "mocha lib/s3blaster.js",
+    "start": "node index.js",
     "s3simple": "mocha tests/performance/s3simple.js",
     "s3standard": "mocha tests/performance/s3standard.js",
     "s3full": "mocha tests/performance/s3full.js",
     "s3sizes": "mocha tests/performance/s3sizes.js",
     "s3parallel": "mocha tests/performance/s3parallel.js",
-    "s3mpu": "mocha tests/performance/s3mpu.js",
-    "s3ga":  "mocha tests/performance/s3ga.js"
+    "s3mpu": "mocha tests/performance/s3mpu.js"
   }
 }
