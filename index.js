@@ -1,3 +1,12 @@
 'use strict'; // eslint-disable-line strict
 
-require('./lib/s3blaster');
+const execution = require('./lib/s3blaster').execution;
+
+if (require.main === module) {
+    execution(err => {
+        if (err) {
+            process.stderr.write(err);
+        }
+        process.exit();
+    });
+}
