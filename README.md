@@ -188,6 +188,46 @@ output folder can be defined by using the environment variable FOLDERNAME, e.g.
 Then, all output files will be stored in the `./results/release/today`
 directory.
 
+### Plot manipulation
+
+There are two plot actions applicable for simulation results. Configuration
+info and results of a simulation is stored in an `.id` file whose prefix is
+same as stats files.
+
+* Re-plot graphs
+
+    All graphs of a simulation can be re-plotted with modifying on
+
+    - Prefix for output graph files
+    - Type of output files (pdf or png)
+    - Font size
+    - Font type.
+
+    CLI for re-plot:
+
+    ```
+    node lib/plotter.js --replot path_to_id_file --outputPrefixName <name>
+    --outputType <type> --fontType <type> --fontSize <size>
+    ```
+
+* Performance comparison
+
+    Performance of different tests are shown in a same file. The graph file
+    contains two pages for latency and #operations/s performance metrics.
+
+    In each page, graphs are placed in a layout where each column corresponds
+    to a request type, e.g. put, get
+
+    Each graph displays performances for an object size. The x-axis is number of
+    parallel requests. Each curve in the graph shows performance of each test.
+
+    CLI for comparison:
+
+    ```
+    node lib/plotter.js --compare
+    path_to_id_file_test_1,path_to_id_file_test_2,path_to_id_file_test_3
+    ```
+
 ### Main input parameters
 
 There are multiple configurable input parameters as shown in
