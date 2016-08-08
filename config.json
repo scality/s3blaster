@@ -41,7 +41,7 @@
         "workOnCurrObjs": true,
         "dontCleanDB": false,
         "noKeyFlag": false,
-        "freqShow": 1,
+        "freqShow": 1000,
         "samplingStep": 1,
         "percentiles": [60, 80, 90, 95, 99, 100],
         "runTime": 10,

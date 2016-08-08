@@ -84,7 +84,8 @@ Key | Parameter | Value | Default
 `ssm` | Flag for monitoring resources' consuming | Boolean | `false`
 `liveGlobal` | Flag for showing stats and live results | Boolean | `false`
 `rate` | Frequency for monitoring (in ms) | Number | `false`
-`ssmTypes` | Patterns for monitoring | Either `all` or subset of `[s3, vaultd, bucketd, repdMap, repd, sproxyd, nginx, supervisord, filebeat, mdBktSize, mdLogSize]` | `'all'`
+`ssmTypes` | Patterns for monitoring | Either `all` or subset of `[s3, sproxyd, mdBktSize, mdLogSize]` | `'all'`
+`monitors` | Dynamic extra processes for monitoring | Array of string, e.g. `['s3:pattern1', 'sproxyd:pattern2']`| []
 `displaySSM` | Flag for displaying monitoring results | Boolean | `false`
 `showInputParams` | Flag for showing input parameters | Boolean | `false`
 |
