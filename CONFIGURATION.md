@@ -50,7 +50,7 @@ Key | Parameter | Value | Default
 `host` | Host's address | String | `'localhost'`
 `port` | Host's port | Number | 8000
 `forksNb` | Number of S3Blaster's workers | Number | 0
-`servers` | List of servers where processes runs on | Array of strings | `['localhost']`
+`servers` | List of servers where processes runs on | Array of strings | `[]`
 `signature` | Signature version for authentication process | `v2`/`v4` | `v4`
 `region` | AWS Regions | String | `'eu-west-1'`
 |

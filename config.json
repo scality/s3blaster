@@ -8,9 +8,7 @@
         "host": "localhost",
         "port": 8000,
         "forksNb": 0,
-        "servers": [
-            "localhost"
-        ],
+        "servers": [],
         "signature": "v4",
         "region": "eu-west-1"
     },
@@ -56,7 +54,7 @@
     "plotter": {
         "statsFolder": "hello/scality",
         "graphs": "all",
-        "outputType": "pdf",
+        "outputType": "png",
         "output": "test",
         "fitPlot": false,
         "message": "message from JSON"
