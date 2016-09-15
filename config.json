@@ -49,7 +49,8 @@
         "ssmTypes": "all",
         "displaySSM": true,
         "resConsMonitor": false,
-        "showInputParams": false
+        "showInputParams": false,
+        "userDefinedHead":[1,1]
     },
     "plotter": {
         "statsFolder": "hello/scality",
