@@ -27,18 +27,18 @@
   "dependencies": {
     "async": "~1.4.2",
     "aws-sdk": "^2.2.23",
+    "commander": "^2.9.0",
+    "generic-pool": "^2.4.2",
+    "mocha": "^2.3.3",
+    "readline-sync": "^1.4.1",
+    "ssh2": "^0.5.0",
+    "underscore": "^1.8.3",
     "utf8": "~2.1.1"
   },
   "devDependencies": {
-    "commander": "^2.9.0",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines",
-    "mocha": "^2.3.3",
-    "generic-pool": "^2.4.2",
-    "ssh2": "^0.5.0",
-    "underscore": "^1.8.3",
-    "readline-sync": "^1.4.1"
+    "eslint-config-scality": "scality/Guidelines"
   },
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
