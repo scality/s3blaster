@@ -16,6 +16,7 @@
         "bucketsNb": 1,
         "bucketPrefix": "bucket",
         "objectsNb": 200,
+        "prefixKey": "",
         "fillObjs": false,
         "fillRange": "0:100",
         "fillThreads": 64,
