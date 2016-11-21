@@ -47,13 +47,14 @@ List of all input parameters are shown in the following table:
 
 Key | Parameter | Value | Default
 --- | --- | --- | ---
-`host` | Host's address | String | `'localhost'`
+| Connection
+`host` | Host's address (\*) | String | `'localhost'`
 `port` | Host's port | Number | 8000
 `forksNb` | Number of S3Blaster's workers | Number | 0
 `servers` | List of servers where processes runs on | Array of strings | `[]`
 `signature` | Signature version for authentication process | `v2`/`v4` | `v4`
 `region` | AWS Regions | String | `'eu-west-1'`
-|
+| Database
 `bucketsNb` | Number of buckets | Number | 1
 `bucketPrefix` | Bucket prefix | String | `bucketname`
 `objectsNb` | Number of objects of a given size | Number | 100
@@ -64,8 +65,8 @@ Key | Parameter | Value | Default
 `unit` | Size unit | `B`, `KB`, `MB` or `GB` | `'KB'`
 `partSizes` | Part size for multipart upload |  `num1, num2, ..` or `start:step:end` | 5
 `objMetadata` | Metadata of uploading objects | `compact`, `standard`, `full` | `'compact'`
-`mdPath` | Path to metadata storage | String | `''`
-|
+`mdPath` | Path to metadata storage(\**) | String | `''`
+| Simulation
 `requests` | List of measured requests | Subset of `[put, get, delete, list, get-acl, multi-upload, combine]` | `'put,get,delete'`
 `proprReqs` | Proportion of requests | Array of numbers | `[1, 1, 1]`
 `range` | Key range of objects for each requests | Array of `all` or `start:end` | `['all', 'all', 'all']`
@@ -88,13 +89,13 @@ Key | Parameter | Value | Default
 `monitors` | Dynamic extra processes for monitoring | Array of string, e.g. `['s3:pattern1', 'sproxyd:pattern2']`| []
 `displaySSM` | Flag for displaying monitoring results | Boolean | `false`
 `showInputParams` | Flag for showing input parameters | Boolean | `false`
-|
+| Output
 `statsFolder` | Folder containing results | Path | `'hello/scality'`
 `outputType` | Type of output graphs | `pdf`, `png` | `'pdf'`
 `output` | Pattern name of output files | String | `'test'`
 `message` | Personalized message shown on output files | String | `'message'`
 
-There are 4 cases for assigning host's address either
+(\*)There are 4 cases for assigning host's address either
 
 - A specified address of single S3 server
 - First element of `servers` when it is assigned as `'single'`
@@ -102,3 +103,8 @@ There are 4 cases for assigning host's address either
 the host's port must be the proxy's port
 - If it's assigned as `'balancing'`, host's address of S3Blaster workers
 are assigned cyclically by elements of `servers`.
+
+(\**) `mdPath` can contain patterns `<server_address>` that will be automatically
+replaced by S3 server's address. For example, path to metadata storage is
+defined by
+`mdPath = /home/<server_address>/metadata/db/<server_address>`.
