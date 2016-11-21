@@ -22,41 +22,9 @@ S3Blaster computes average number of operations/s.
 
 ## Working schema
 
-```
-+-------------+                +--------+
-|S3Blaster    |                |Plotter |
-|Master       +-----plot------->        |
-|             | +---plot------->        <--------plot--------+
-+----^------+-+ |              +--^-----+                    |
-     |      |   |                 |                          |
-     |      |   |                 |                          |
-     |      +--------forks---+---------------------------+   |
-     |      |   |            |    |                      |   |
-     |     +v---+----+     +-v----+--+                 +-v---+---+
-     |     |S3Blaster|     |S3Blaster|     ...         |S3Blaster|
-     |     |Worker 1 |     |Worker 2 |                 |Worker n |
-     |     +---^-----+     +-----^---+                 +--------^+
-     |         |                 |                              |
-     |       requests/         requests/                      requests/
-     |       responses         responses                      responses
-     |         |                 |                              |
-     |         |    +----------------+--------------------------+
- monitoring    |    |            |   |                          |
-     |         | +---------------+---------------------------+  |
-     |         | |  |            |   |                       |  |
-     |         +---------------+---------------------------+ |  |
-     |         | |  |          | |   |                     | |  |
-     |     +---v-v--v--+    +--v-v---v--+              +---v-v--v--+
-     |     |S3 Server 1|    |S3 Server 2|              |S3 Server N|
-     |     |           |    |           |     ....     |           |
-     |     |           |    |           |              |           |
-     |     +----^------+    +-----^-----+              +------^----+
-     |          |                 |                           |
-     |          |                 |                           |
-     +----------+-----------------+---------------------------+
+![Schema](./img/s3blaster.png)
 
-             Figure 1: Working schema of S3Blaster program
-```
+Figure 1: Working schema of S3Blaster program
 
 A working schema of S3Blaster is shown in Figure 1. Note, if there is no fork
 operation (clusters), S3Blaster workers in the schema are replaced by the
