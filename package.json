@@ -4,7 +4,7 @@
   "description": "s3blaster measures performance of S3 Servers",
   "main": "index.js",
   "engines": {
-    "node": "^4.5.0"
+    "node": "6.9.5"
   },
   "repository": "scality/s3blaster",
   "author": {
