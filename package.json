@@ -1,6 +1,6 @@
 {
   "name": "s3blaster",
-  "version": "0.0.1",
+  "version": "1.0.0-zenko",
   "description": "s3blaster measures performance of S3 Servers",
   "main": "index.js",
   "engines": {
@@ -8,8 +8,7 @@
   },
   "repository": "scality/s3blaster",
   "author": {
-    "name": "Giorgio Regni",
-    "email": "giorgio.regni@scality.com",
+    "name": "Scality Inc.",
     "url": "http://www.scality.com/"
   },
   "contributors": [
@@ -38,7 +37,7 @@
   "devDependencies": {
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "eslint-config-scality": "scality/Guidelines#z/1.0"
   },
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
