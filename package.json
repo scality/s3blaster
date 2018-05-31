@@ -1,6 +1,6 @@
 {
   "name": "s3blaster",
-  "version": "0.0.1",
+  "version": "8.0.0",
   "description": "s3blaster measures performance of S3 Servers",
   "main": "index.js",
   "engines": {
@@ -38,7 +38,7 @@
   "devDependencies": {
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines"
+    "eslint-config-scality": "scality/Guidelines#development/8.0"
   },
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
