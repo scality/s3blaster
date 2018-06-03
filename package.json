@@ -1,6 +1,6 @@
 {
     "name": "s3blaster",
-    "version": "7.4.0.1",
+    "version": "7.4.0.2",
     "description": "s3blaster measures performance of S3 Servers",
     "main": "index.js",
     "engines": {
