@@ -1,54 +1,54 @@
 {
-  "name": "s3blaster",
-  "version": "0.0.1",
-  "description": "s3blaster measures performance of S3 Servers",
-  "main": "index.js",
-  "engines": {
-    "node": ">=6.9.5"
-  },
-  "repository": "scality/s3blaster",
-  "author": {
-    "name": "Giorgio Regni",
-    "email": "giorgio.regni@scality.com",
-    "url": "http://www.scality.com/"
-  },
-  "contributors": [
-    "Lam Pham Sy <lam.pham-sy@scality.com>"
-  ],
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/scality/s3blaster/issues"
-  },
-  "homepage": "https://github.com/scality/s3blaster#readme",
-  "keywords": [
-    "s3",
-    "performance"
-  ],
-  "dependencies": {
-    "async": "~1.4.2",
-    "aws-sdk": "^2.2.23",
-    "commander": "^2.9.0",
-    "generic-pool": "^2.4.2",
-    "mocha": "^2.3.3",
-    "readline-sync": "^1.4.1",
-    "ssh2": "^0.5.0",
-    "underscore": "^1.8.3",
-    "utf8": "~2.1.1"
-  },
-  "devDependencies": {
-    "eslint": "^2.4.0",
-    "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#rel/7.4"
-  },
-  "scripts": {
-    "lint": "eslint $(git ls-files '*.js')",
-    "lint_md": "mdlint $(git ls-files '*.md')",
-    "start": "node index.js",
-    "s3simple": "mocha tests/performance/s3simple.js",
-    "s3standard": "mocha tests/performance/s3standard.js",
-    "s3full": "mocha tests/performance/s3full.js",
-    "s3sizes": "mocha tests/performance/s3sizes.js",
-    "s3parallel": "mocha tests/performance/s3parallel.js",
-    "s3mpu": "mocha tests/performance/s3mpu.js"
-  }
+    "name": "s3blaster",
+    "version": "7.4.0.1",
+    "description": "s3blaster measures performance of S3 Servers",
+    "main": "index.js",
+    "engines": {
+        "node": ">=6.9.5"
+    },
+    "repository": "scality/s3blaster",
+    "author": {
+        "name": "Giorgio Regni",
+        "email": "giorgio.regni@scality.com",
+        "url": "http://www.scality.com/"
+    },
+    "contributors": [
+        "Lam Pham Sy <lam.pham-sy@scality.com>"
+    ],
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/scality/s3blaster/issues"
+    },
+    "homepage": "https://github.com/scality/s3blaster#readme",
+    "keywords": [
+        "s3",
+        "performance"
+    ],
+    "dependencies": {
+        "async": "~1.4.2",
+        "aws-sdk": "^2.2.23",
+        "commander": "^2.9.0",
+        "generic-pool": "^2.4.2",
+        "mocha": "^2.3.3",
+        "readline-sync": "^1.4.1",
+        "ssh2": "^0.5.0",
+        "underscore": "^1.8.3",
+        "utf8": "~2.1.1"
+    },
+    "devDependencies": {
+        "eslint": "^2.4.0",
+        "eslint-config-airbnb": "^6.0.0",
+        "eslint-config-scality": "scality/Guidelines#hotfix/7.4.0"
+    },
+    "scripts": {
+        "lint": "eslint $(git ls-files '*.js')",
+        "lint_md": "mdlint $(git ls-files '*.md')",
+        "start": "node index.js",
+        "s3simple": "mocha tests/performance/s3simple.js",
+        "s3standard": "mocha tests/performance/s3standard.js",
+        "s3full": "mocha tests/performance/s3full.js",
+        "s3sizes": "mocha tests/performance/s3sizes.js",
+        "s3parallel": "mocha tests/performance/s3parallel.js",
+        "s3mpu": "mocha tests/performance/s3mpu.js"
+    }
 }
