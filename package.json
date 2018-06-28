@@ -38,7 +38,7 @@
   "devDependencies": {
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.0.0",
-    "eslint-config-scality": "scality/Guidelines#development/8.0"
+    "eslint-config-scality": "scality/Guidelines#7.4.0.3"
   },
   "scripts": {
     "lint": "eslint $(git ls-files '*.js')",
